@@ -1,6 +1,6 @@
-from aqt.utils import getText, qconnect
+from aqt.utils import askUser, qconnect
 from aqt.qt import QMenu
-from aqt import mw, deckchooser
+from aqt import mw 
 
 from anki import search_pb2
 
@@ -14,6 +14,9 @@ def unescape_note(note):
 def unescape(deck_id):
     deck = mw.col.decks.get(deck_id)
     node = search_pb2.SearchNode(deck=deck['name'])
+
+    if not askUser(f"Unescape all fields of all notes in deck \"{deck['name']}\"?"):
+        return
 
     search_string = mw.col.build_search_string(node)
     note_ids = mw.col.find_notes(search_string)
